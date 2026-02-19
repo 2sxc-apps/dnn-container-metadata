@@ -6,8 +6,6 @@
 <%@ Import Namespace="ToSic.Eav.Metadata" %>
 <%-- This namespace provides models APIs --%>
 <%@ Import Namespace="ToSic.Eav.Models" %>
-<%-- This namespace provides models APIs --%>
-<%@ Import Namespace="ToSic.Eav.Data" %>
 
 <script runat="server">
 
@@ -19,14 +17,19 @@
   private ITypedApi _ssa;
 
   /// <summary>
+  /// Shorthand to quickly access the module later in code
+  /// </summary>
+  private ToSic.Sxc.Context.ICmsModule MyModule => SxcSiteApi.MyContext.Module;
+
+  /// <summary>
   /// Get the PageToolbar to show somewhere using <%= ModuleToolbar() %> or <%= ModuleToolbar().AsTag() %>
   /// </summary>
   private ToSic.Sxc.Edit.Toolbar.IToolbarBuilder ModuleToolbar() =>
-    SxcSiteApi.Kit.Toolbar
+    SxcSiteApi.Kit.Toolbar.Empty()
       // Add the default metadata button(s) for this module - ATM just notes, but in future could be more
-      .Metadata(SxcSiteApi.MyContext.Module)
+      .Metadata(MyModule)
       // Add button to edit the custom ModuleMetadata type (define in the Site-App)
-      .Metadata(SxcSiteApi.MyContext.Module, contentTypes: "ModuleMetadata");
+      .Metadata(MyModule, contentTypes: "ModuleMetadata");
 
   /// <summary>
   /// Get the ModuleMetadata for this module, which contains the BackgroundColor property.
@@ -34,7 +37,7 @@
   /// and can be used in the .ascx without null-checks.
   /// </summary>
   private ModuleMetadata Metadata => _metadata
-    ?? (_metadata = SxcSiteApi.MyContext.Module.TryGetMetadata<ModuleMetadata>() ?? new ModuleMetadata());
+    ?? (_metadata = MyModule.TryGetMetadata<ModuleMetadata>() ?? new ModuleMetadata());
   private ModuleMetadata _metadata;
 
 
@@ -67,7 +70,7 @@
   <%= ModuleToolbar().AsTag() %>
 </h5>
 <br>
-Module: <%= SxcSiteApi.MyContext.Module.Id %>
+Module: <%= MyModule.Id %>
 
 <hr>
 <ol>
@@ -75,7 +78,7 @@ Module: <%= SxcSiteApi.MyContext.Module.Id %>
   <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
   <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
   <li>
-    Note: <%= SxcSiteApi.MyContext.Module.TryGetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
+    Note: <%= MyModule.TryGetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
   </li>
   <li>
     Background Color: <%= Metadata?.BackgroundColor %>
