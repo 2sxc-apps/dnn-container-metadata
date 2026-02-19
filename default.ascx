@@ -38,9 +38,9 @@
   private ModuleMetadata _metadata;
 
 
-  class ModuleMetadata: ModelOfEntityClassic
+  class ModuleMetadata: ModelFromEntityClassic
   {
-    public string BackgroundColor => GetThis<string>("white");
+    public string BackgroundColor => GetThis(fallback: "white");
   }
 </script>
 
