@@ -17,7 +17,7 @@
   private ITypedApi _ssa;
 
   /// <summary>
-  /// Shorthand to quickly access the module later in code
+  /// Shorthand to quickly access the module in code
   /// </summary>
   private ToSic.Sxc.Context.ICmsModule MyModule => SxcSiteApi.MyContext.Module;
 
@@ -37,7 +37,7 @@
   /// and can be used in the .ascx without null-checks.
   /// </summary>
   private ModuleMetadata Metadata => _metadata
-    ?? (_metadata = MyModule.TryGetMetadata<ModuleMetadata>() ?? new ModuleMetadata());
+    ?? (_metadata = MyModule.GetMetadata<ModuleMetadata>() ?? new ModuleMetadata());
   private ModuleMetadata _metadata;
 
 
@@ -78,7 +78,7 @@ Module: <%= MyModule.Id %>
   <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
   <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
   <li>
-    Note: <%= MyModule.TryGetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
+    Note: <%= MyModule.GetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
   </li>
   <li>
     Background Color: <%= Metadata?.BackgroundColor %>
