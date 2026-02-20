@@ -1,7 +1,8 @@
+<%@ Control language="C#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.UI.Containers.Container" %>
+
 <%@ Import Namespace="ToSic.Sxc.Services" %>  <%-- This has all common 2sxc services and GetScopedService(...)  --%>
 <%@ Import Namespace="ToSic.Sxc.Code" %>      <%-- This namespace provides ITypedApi --%>
-<%@ Import Namespace="ToSic.Eav.Metadata" %>  <%-- This namespace provides metadata APIs --%>
-<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs such as GetMetadata<...> --%>
+<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs --%>
 
 <script runat="server">
 
@@ -9,11 +10,13 @@
   /// Get the Context and API of this module and keep for re-use.
   /// Note that ??= would have been more elegant, but not supported in older C#.
   /// </summary>
-  protected ITypedApi SxcSiteApi => _ssa ?? (_ssa = this.GetScopedService<ITypedApiService>().ApiOfModule(ModuleConfiguration.TabID, ModuleConfiguration.ModuleID));
+  protected ITypedApi SxcSiteApi => _ssa ?? (_ssa = this.GetScopedService<ITypedApiService>()
+    .ApiOfSite(PortalSettings.PortalId, ModuleConfiguration.TabID, ModuleConfiguration.ModuleID)
+  );
   private ITypedApi _ssa;
 
   /// <summary>
-  /// Shorthand to quickly access the module in code
+  /// Shorthand to quickly access the module later in code
   /// </summary>
   private ToSic.Sxc.Context.ICmsModule MyModule => SxcSiteApi.MyContext.Module;
 
@@ -44,7 +47,6 @@
 </script>
 
 
-<%@ Control language="C#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.UI.Containers.Container" %>
 <%-- The main wrapper with a few specials
   1. The ID contains the module-id, which lets content inside add CSS affecting this
   2. The background color is set from the module metadata, which can be edited via the toolbar button
@@ -70,6 +72,7 @@ Module: <%= MyModule.Id %>
 
 <hr>
 <ol>
+  <li>Site Id: <%= PortalSettings.PortalId %></li>
   <li>Tab ID: <%= ModuleConfiguration.TabID %></li>
   <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
   <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
@@ -78,4 +81,8 @@ Module: <%= MyModule.Id %>
   </li>
   <li>
     Background Color: <%= Metadata?.BackgroundColor %>
+  </li>
+  <li>
+    Container Class: <%= this.GetType().BaseType.FullName %>
+  </li>
 </ol>
