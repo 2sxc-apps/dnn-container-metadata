@@ -2,15 +2,18 @@
 
 <%@ Import Namespace="ToSic.Sxc.Services" %>  <%-- This has all common 2sxc services and GetScopedService(...)  --%>
 <%@ Import Namespace="ToSic.Sxc.Code" %>      <%-- This namespace provides ITypedApi --%>
-<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs --%>
+<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs like GetMetadata<T>() --%>
 
 <script runat="server">
+
+  // Debug to show details below in case of trouble
+  private bool debug = false;
 
   /// <summary>
   /// Get the Context and API of this module and keep for re-use.
   /// Note that ??= would have been more elegant, but not supported in older C#.
   /// </summary>
-  protected ITypedApi SxcSiteApi => _ssa ?? (_ssa = this.GetScopedService<ITypedApiService>()
+  private ITypedApi SxcSiteApi => _ssa ?? (_ssa = this.GetScopedService<ITypedApiService>()
     .ApiOfSite(PortalSettings.PortalId, ModuleConfiguration.TabID, ModuleConfiguration.ModuleID)
   );
   private ITypedApi _ssa;
@@ -40,6 +43,15 @@
   private ModuleMetadata _metadata;
 
 
+  /// <summary>
+  /// This is the custom ModuleMetadata class, which is used to store the background color for this module.
+  /// </summary>
+  /// <remarks>
+  /// * It inherits from ModelFromEntityClassic, which means it can be used in Model-APIs such as GetMetadata<T>()
+  /// * The BackgroundColor property uses GetThis() to read the value from the metadata, and provides a fallback of "white" if not set.
+  /// * You can add more properties here to store more metadata values for this module, and they will automatically be saved to the module's metadata when edited via the toolbar.
+  /// * Note that this class is defined in the .ascx file, but it could also be in code-behind or in a DLL
+  /// </remarks>
   class ModuleMetadata: ModelFromEntityClassic
   {
     public string BackgroundColor => GetThis(fallback: "white");
@@ -60,29 +72,31 @@
   <div id="ContentPane" class="container" runat="server"></div>
 </div>
 
-<hr>
-<hr>
+<% if (debug) { %>
+  <hr>
+  <hr>
 
-<h5>
-  debug
-  <%= ModuleToolbar().AsTag() %>
-</h5>
-<br>
-Module: <%= MyModule.Id %>
+  <h5>
+    debug
+    <%= ModuleToolbar().AsTag() %>
+  </h5>
+  <br>
+  Module: <%= MyModule.Id %>
 
-<hr>
-<ol>
-  <li>Site Id: <%= PortalSettings.PortalId %></li>
-  <li>Tab ID: <%= ModuleConfiguration.TabID %></li>
-  <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
-  <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
-  <li>
-    Note: <%= MyModule.GetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
-  </li>
-  <li>
-    Background Color: <%= Metadata?.BackgroundColor %>
-  </li>
-  <li>
-    Container Class: <%= this.GetType().BaseType.FullName %>
-  </li>
-</ol>
+  <hr>
+  <ol>
+    <li>Site Id: <%= PortalSettings.PortalId %></li>
+    <li>Tab ID: <%= ModuleConfiguration.TabID %></li>
+    <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
+    <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
+    <li>
+      Note: <%= MyModule.GetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
+    </li>
+    <li>
+      Background Color: <%= Metadata?.BackgroundColor %>
+    </li>
+    <li>
+      Container Class: <%= this.GetType().BaseType.FullName %>
+    </li>
+  </ol>
+<% } %>
