@@ -1,11 +1,7 @@
-<%-- This has all common 2sxc services and GetScopedService(...)  --%>
-<%@ Import Namespace="ToSic.Sxc.Services" %>
-<%-- This namespace provides ITypedApi --%>
-<%@ Import Namespace="ToSic.Sxc.Code" %>
-<%-- This namespace provides metadata APIs --%>
-<%@ Import Namespace="ToSic.Eav.Metadata" %>
-<%-- This namespace provides models APIs --%>
-<%@ Import Namespace="ToSic.Eav.Models" %>
+<%@ Import Namespace="ToSic.Sxc.Services" %>  <%-- This has all common 2sxc services and GetScopedService(...)  --%>
+<%@ Import Namespace="ToSic.Sxc.Code" %>      <%-- This namespace provides ITypedApi --%>
+<%@ Import Namespace="ToSic.Eav.Metadata" %>  <%-- This namespace provides metadata APIs --%>
+<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs such as GetMetadata<...> --%>
 
 <script runat="server">
 
