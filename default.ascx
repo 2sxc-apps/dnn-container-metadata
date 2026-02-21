@@ -2,7 +2,7 @@
 
 <%@ Import Namespace="ToSic.Sxc.Services" %>  <%-- This has all common 2sxc services and GetScopedService(...)  --%>
 <%@ Import Namespace="ToSic.Sxc.Code" %>      <%-- This namespace provides ITypedApi --%>
-<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs like GetMetadata<T>() --%>
+<%@ Import Namespace="ToSic.Eav.Models" %>    <%-- This namespace provides models APIs like GetMetadataModel<T>() --%>
 
 <script runat="server">
 
@@ -35,11 +35,12 @@
 
   /// <summary>
   /// Get the ModuleMetadata for this module, which contains the BackgroundColor property.
+  /// This example assumes that the content-type name is also "ModuleMetadata", as the class name is used to lookup the metadata.
   /// Will create an empty ModuleMetadata if not yet created, so that all values always exist
   /// and can be used in the .ascx without null-checks.
   /// </summary>
   private ModuleMetadata Metadata => _metadata
-    ?? (_metadata = MyModule.GetMetadata<ModuleMetadata>() ?? new ModuleMetadata());
+    ?? (_metadata = MyModule.GetMetadataModel<ModuleMetadata>() ?? new ModuleMetadata());
   private ModuleMetadata _metadata;
 
 
@@ -90,7 +91,7 @@
     <li>Module ID: <%= ModuleConfiguration.ModuleID %></li>
     <li>TabModuleId: <%= ModuleConfiguration.TabModuleID %></li>
     <li>
-      Note: <%= MyModule.GetMetadata<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
+      Note: <%= MyModule.GetMetadataModel<ToSic.Sxc.Cms.Notes.INoteModel>()?.Note %>
     </li>
     <li>
       Background Color: <%= Metadata?.BackgroundColor %>
