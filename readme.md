@@ -23,7 +23,7 @@ The first step is to define what metadata you want to use.
 > TIP
 > Make sure you are doing this in the SITE scope, not on a specific App, as the data we want to store should be available in the entire site and not in a specific App.
 
-1. Go to the site App
+1. Go to the **site** App
 1. Create a new content-type, for example `ModuleMetadata`
 1. Specify one or more fields, for example `BackgroundColor` and `TextColor`
 
