@@ -23,7 +23,7 @@ The first step is to define what metadata you want to use.
 > TIP
 > Make sure you are doing this in the SITE scope, not on a specific App, as the data we want to store should be available in the entire site and not in a specific App.
 
-1. Go to the **site** App
+1. Go to the **Primary / Site** App
 1. Create a new content-type, for example `ModuleMetadata`
 1. Specify one or more fields, for example `BackgroundColor` and `TextColor`
 
@@ -42,6 +42,19 @@ In the container code, you can retrieve the metadata for the current module and 
 
 1. Adjust the property names and types in the class `ModuleMetadata` in the container code to match the field names you created, for example `BackgroundColor` and `TextColor`.
 1. Put them in the output
+
+### Improve the Button with Custom Color and Icon
+
+To make the button more user-friendly, you can adjust the button for this specific content-type.
+It's a bit hidden, but these are the steps:
+
+1. Go to the content-type (in the **Primary / Site** App)
+1. To the right of the content type, click on the metadata icon 🏷️
+1. In the popup, select add (+)
+1. Choose `Toolbar Button Configuration`
+1. Set the command to `metadata`
+1. Specify the color
+1. Optionally add an SVG of an icon as well.
 
 ---
 

@@ -56,6 +56,8 @@
   class ModuleMetadata: ModelFromEntityClassic
   {
     public string BackgroundColor => GetThis(fallback: "white");
+
+    public bool IsDark => GetThis(fallback: false);
   }
 </script>
 
@@ -67,7 +69,7 @@
 --%>
 <div id="module-<%= ModuleConfiguration.ModuleID %>"
   class="to-shine-background-container py-4 py-lg-5"
-  style="background-color: <%= Metadata?.BackgroundColor %>"
+  style="background-color: <%= Metadata.BackgroundColor %>"
   <%= ModuleToolbar() %>
 >
   <div id="ContentPane" class="container" runat="server"></div>
